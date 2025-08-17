@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weave Headband AR v4.3 — Preview</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- MediaPipe FaceMesh & Camera -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1>Weave Headband AR v4.3</h1>
+      <div class="mode-toggle">
+        <button class="tab active" data-tab="style">樣式</button>
+        <button class="tab" data-tab="text">文字</button>
+        <button class="tab" data-tab="preview">預覽</button>
+      </div>
+    </header>
+
+    <main class="stage">
+      <div class="camera-wrap">
+        <video id="video" playsinline autoplay muted></video>
+        <canvas id="overlay"></canvas>
+        <!-- Offscreen export canvas for 1080x1920 portrait capture -->
+        <canvas id="exportCanvas" width="1080" height="1920" style="display:none;"></canvas>
+      </div>
+
+      <aside class="controls">
+        <section id="panel-style" class="panel active">
+          <div class="row">
+            <label>頭帶樣式</label>
+            <select id="styleSelect">
+              <option value="moonRabbit">Moon Rabbit（中秋預設）</option>
+              <option value="cleanFit">Clean Fit</option>
+              <option value="twill">Twill</option>
+              <option value="racing">Racing</option>
+              <option value="sports">Sports</option>
+              <option value="mountain">Mountain Shape</option>
+              <option value="ballet">Ballet Girl</option>
+              <option value="y2k">Y2K</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label>顏色</label>
+            <div id="colorPalette" class="swatches">
+              <!-- 10 colors, default Orange -->
+              <button class="swatch" data-color="#7A5037" title="Chocolate Mocha"></button>
+              <button class="swatch" data-color="#0D0D0D" title="Deep Black"></button>
+              <button class="swatch" data-color="#C1121F" title="Scarlet Red"></button>
+              <button class="swatch" data-color="#F5E6A1" title="Cream Yellow"></button>
+              <button class="swatch active" data-color="#FF7A00" title="Orange"></button>
+              <button class="swatch" data-color="#FF8ABF" title="Pink"></button>
+              <button class="swatch" data-color="#E6D5B8" title="Champagne Beige"></button>
+              <button class="swatch" data-color="#6B8E23" title="Moss Green"></button>
+              <button class="swatch" data-color="#800020" title="Burgundy"></button>
+              <button class="swatch" data-color="#FFFFFF" title="Pure White"></button>
+            </div>
+          </div>
+
+          <div class="row">
+            <label>美肌柔化</label>
+            <label class="switch">
+              <input id="beautyToggle" type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </section>
+
+        <section id="panel-text" class="panel">
+          <div class="row">
+            <label>頭帶文字</label>
+            <input id="bandText" type="text" placeholder="輸入頭帶文字" value="ECI WEAVE" />
+          </div>
+          <div class="row">
+            <label>字型</label>
+            <select id="fontSelect">
+              <option value="600 32px/1 Inter, system-ui, sans-serif" selected>Inter SemiBold</option>
+              <option value="700 34px/1 Montserrat, system-ui, sans-serif">Montserrat Bold</option>
+              <option value="700 36px/1 Noto Sans TC, system-ui, sans-serif">Noto Sans TC Bold</option>
+              <option value="700 40px/1 Bebas Neue, system-ui, sans-serif">Bebas Neue</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>大小</label>
+            <input id="fontSize" type="range" min="20" max="64" step="2" value="40" />
+            <span id="fontSizeVal">40</span> px
+          </div>
+          <div class="row">
+            <label>字重</label>
+            <input id="fontWeight" type="range" min="400" max="900" step="100" value="700" />
+            <span id="fontWeightVal">700</span>
+          </div>
+          <div class="row">
+            <label>文字顏色</label>
+            <input id="textColor" type="color" value="#FFFFFF" />
+          </div>
+          <div class="row">
+            <label>邊框</label>
+            <label class="switch">
+              <input id="textStrokeToggle" type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </section>
+
+        <section id="panel-preview" class="panel">
+          <div class="row">
+            <button id="captureBtn" class="primary">拍照（直式 PNG）</button>
+          </div>
+          <div class="row share-row">
+            <button id="shareBtn" class="secondary">分享</button>
+            <button id="downloadBtn" class="secondary">下載</button>
+          </div>
+          <p class="hint">拍照與輸出皆有美肌柔化；張嘴會觸發「泡泡兔子」動畫</p>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="app-footer">
+      <small>© 2025 Weave Headband AR v4.3</small>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

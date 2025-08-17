@@ -1,0 +1,52 @@
+:root{
+  --bg:#0b0b0c;
+  --panel:#131317;
+  --accent:#ff7a00;
+  --text:#f6f7fb;
+  --muted:#9aa0a6;
+  --card:#1b1c22;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --round: 18px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans TC",Arial,sans-serif}
+#app{display:flex;flex-direction:column;height:100%}
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(180deg,#111 0%,#0c0c0f 100%);border-bottom:1px solid #222}
+.app-header h1{margin:0;font-size:18px;font-weight:700;letter-spacing:.3px}
+.mode-toggle .tab{background:#1b1c22;border:1px solid #292a33;color:var(--text);padding:8px 12px;border-radius:12px;margin-left:6px;cursor:pointer}
+.mode-toggle .tab.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+.stage{display:grid;grid-template-columns:1fr 340px;gap:14px;padding:14px;height:calc(100% - 62px)}
+.camera-wrap{position:relative;background:#000;border-radius:var(--round);overflow:hidden;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center}
+video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)} /* mirror the preview camera for UX */
+#overlay{position:absolute;inset:0}
+.controls{background:var(--panel);border-radius:var(--round);padding:12px;overflow:auto;box-shadow:var(--shadow)}
+.panel{display:none}
+.panel.active{display:block}
+.row{display:flex;align-items:center;justify-content:space-between;margin:10px 0;gap:8px}
+.row label{font-size:14px;color:var(--muted)}
+input[type="text"]{flex:1;background:#0f1014;border:1px solid #262833;color:var(--text);padding:10px;border-radius:12px}
+select{flex:1;background:#0f1014;border:1px solid #262833;color:var(--text);padding:10px;border-radius:12px}
+input[type="range"]{flex:1}
+#fontSizeVal,#fontWeightVal{min-width:36px;text-align:right}
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.swatch{height:32px;border-radius:999px;border:2px solid #2a2d38;cursor:pointer;box-shadow:inset 0 0 0 2px rgba(255,255,255,.06)}
+.swatch.active{outline:3px solid var(--accent)}
+.primary,.secondary{width:100%;padding:12px 14px;border-radius:14px;border:0;cursor:pointer;font-weight:700}
+.primary{background:var(--accent);color:#000}
+.secondary{background:#23242c;color:var(--text);border:1px solid #2f3140}
+.hint{color:var(--muted);font-size:12px;margin-top:6px}
+.app-footer{padding:8px 16px;color:#8a8f99;border-top:1px solid #222}
+
+.switch{position:relative;display:inline-block;width:48px;height:26px}
+.switch input{display:none}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#2a2d38;border-radius:26px;transition:.2s}
+.slider:before{position:absolute;content:"";height:22px;width:22px;left:2px;top:2px;background:white;border-radius:50%;transition:.2s}
+input:checked + .slider{background:var(--accent)}
+input:checked + .slider:before{transform:translateX(22px)}
+
+.share-row{display:flex;gap:8px}
+
+@media(max-width:980px){
+  .stage{grid-template-columns:1fr}
+  .controls{order:-1}
+}
